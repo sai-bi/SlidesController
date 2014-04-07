@@ -1,29 +1,41 @@
 package com.example.slides_controller.app;
-import android.graphics.Point;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by saibi on 3/25/14.
  */
-public class Message {
+public class Message implements Serializable {
     private int operation;
-    private ArrayList<MyPoint> line;
+    private ArrayList<Integer> line_x;
+    private ArrayList<Integer> line_y;
 
-    public Message(){
-        line = new ArrayList<MyPoint>();
+    public Message() {
+        line_x = new ArrayList<Integer>();
+        line_y = new ArrayList<Integer>();
         operation = 0;
     }
-    public void setOperation(int operation){
-        this.operation = operation;
+
+    public void addPoint(int x, int y) {
+        line_x.add(x);
+        line_y.add(y);
     }
-    public void addPoint(MyPoint v){
-        line.add(v);
-    }
-    public int getOperation(){
+
+    public int getOperation() {
         return operation;
     }
-    public ArrayList<MyPoint> getLine(){
-        return line;
+
+    public void setOperation(int operation) {
+        this.operation = operation;
+    }
+
+    public ArrayList<Integer> getLine_x() {
+        return line_x;
+    }
+
+    public ArrayList<Integer> getLine_y() {
+        return line_y;
     }
 
 }

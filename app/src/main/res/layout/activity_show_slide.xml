@@ -6,6 +6,11 @@
     android:orientation="vertical"
     tools:context="com.example.slides_controller.app.Connect">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -17,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="Start" />
 
         <Button
@@ -25,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="End" />
 
         <Button
@@ -33,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="Previous" />
     </LinearLayout>
 
@@ -47,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="Next" />
 
         <Button
@@ -55,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="Black" />
 
         <Button
@@ -63,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="White" />
     </LinearLayout>
 

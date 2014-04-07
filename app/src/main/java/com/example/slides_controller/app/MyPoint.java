@@ -1,9 +1,11 @@
 package com.example.slides_controller.app;
 
+import java.io.Serializable;
+
 /**
  * Created by saibi on 3/25/14.
  */
-public class MyPoint {
+public class MyPoint implements Serializable {
     public double x;
     public double y;
 
