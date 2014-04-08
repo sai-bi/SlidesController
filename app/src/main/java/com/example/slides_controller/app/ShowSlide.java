@@ -9,12 +9,14 @@ import android.widget.Button;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 
 public class ShowSlide extends Activity {
 
     private Socket socket;
+    private PrintWriter pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public class ShowSlide extends Activity {
             public void run() {
                 try {
                     socket = new Socket(server_ip, port_number);
+                    OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+                    BufferedWriter bw = new BufferedWriter(osw);
+                    pw = new PrintWriter(bw);
                 } catch (Exception e) {
                     Log.d("Error", "Cannot connect to server...");
                 }
@@ -84,11 +89,8 @@ public class ShowSlide extends Activity {
     private void sendMessage(int message_code) {
         Log.d("send", "send messages");
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
-            BufferedWriter bw = new BufferedWriter(osw);
-            bw.write(Integer.toString(message_code) + ";" + "hello world");
-            bw.flush();
-            bw.close();
+            pw.println(Integer.toString(message_code) + ";" + "hello world");
+            pw.flush();
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("Error", "Cannot send message");
