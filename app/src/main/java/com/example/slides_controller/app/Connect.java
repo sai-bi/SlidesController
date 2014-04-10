@@ -33,7 +33,7 @@ public class Connect extends Activity {
         final EditText server_ip_input;
         final EditText port_num_input;
 
-        role_id = 0;
+        role_id = WATCHER;
         connect_btn = (Button) (findViewById(R.id.connect_btn));
         role_radio_group = (RadioGroup) (findViewById(R.id.role_group));
         password_input = (EditText) (findViewById(R.id.password));
@@ -43,7 +43,7 @@ public class Connect extends Activity {
         role_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (i == 0) {
+                if (role_id == SPEAKER) {
                     // set gone
                     password_input.setVisibility(View.GONE);
                     role_id = WATCHER;
@@ -62,7 +62,7 @@ public class Connect extends Activity {
             @Override
             public void onClick(View view) {
 
-                server_ip = "202.189.127.91";
+                server_ip = "202.189.103.225";
                 port_number = 52315;
                 new Thread(new Runnable() {
                     @Override

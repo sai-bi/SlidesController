@@ -12,4 +12,9 @@ public class Command {
     static public final int EXIT_BLACK_SCREEN = 5;
     static public final int WHITE_SCREEN = 6;
     static public final int EXIT_WHITE_SCREEN = 7;
+    static public final int PEN = 8;
+    static public final int LASER = 9;
+    static public final int HIGHLIGHT = 10;
+
+    static public final int IMAGE = 11;
 }

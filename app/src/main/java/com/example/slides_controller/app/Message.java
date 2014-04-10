@@ -3,13 +3,11 @@ package com.example.slides_controller.app;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by saibi on 3/25/14.
- */
 public class Message implements Serializable {
     private int operation;
     private ArrayList<Integer> line_x;
     private ArrayList<Integer> line_y;
+    private byte[] image;
 
     public Message() {
         line_x = new ArrayList<Integer>();
@@ -38,4 +36,16 @@ public class Message implements Serializable {
         return line_y;
     }
 
+    public byte[] getImageByteArray() {
+        return image;
+    }
+
+    public void setImageByteArray(byte[] image) {
+        this.image = image.clone();
+    }
 }
+
+
+
+
+
