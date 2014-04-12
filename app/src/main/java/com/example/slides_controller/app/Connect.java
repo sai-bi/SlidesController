@@ -33,6 +33,7 @@ public class Connect extends Activity {
         final EditText server_ip_input;
         final EditText port_num_input;
 
+
         role_id = WATCHER;
         connect_btn = (Button) (findViewById(R.id.connect_btn));
         role_radio_group = (RadioGroup) (findViewById(R.id.role_group));
@@ -69,6 +70,7 @@ public class Connect extends Activity {
                     public void run() {
                         try {
                             Socket socket = new Socket(server_ip, port_number);
+                            Command.server_socket = socket;
                             Intent intent = new Intent(Connect.this, ShowSlide.class);
                             intent.putExtra("server_ip", server_ip);
                             intent.putExtra("port_number", port_number);

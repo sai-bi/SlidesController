@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -31,6 +32,8 @@ public class ShowSlide extends Activity {
     private Canvas canvas;
     private Paint paint;
     private Bitmap bitmap;
+    private int screen_width;
+    private int screen_height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +43,32 @@ public class ShowSlide extends Activity {
         Intent intent = getIntent();
         final String server_ip = intent.getStringExtra("server_ip");
         final int port_number = intent.getIntExtra("port_number", 0);
-
+        socket = Command.server_socket;
         pen_mode = true;
+        canvas = new Canvas();
+        bitmap = null;
+        paint = new Paint();
+        paint.setStrokeWidth(5);
+        paint.setColor(Color.RED);
+
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        screen_height = displaymetrics.heightPixels;
+        screen_width = displaymetrics.widthPixels;
+        Log.d("width", Integer.toString(screen_width));
+        Log.d("height", Integer.toString(screen_height));
+
+
 
         setButtonListener();
         setImageViewListener();
+
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    socket = new Socket(server_ip, port_number);
                     ops = new ObjectOutputStream(socket.getOutputStream());
                     ois = new ObjectInputStream(socket.getInputStream());
                     listenToServer();
@@ -125,6 +143,7 @@ public class ShowSlide extends Activity {
             public void onClick(View view) {
                 sendMessage(Command.PEN);
                 menu_layout.setVisibility(View.GONE);
+                pen_mode = true;
             }
         });
 
@@ -150,9 +169,12 @@ public class ShowSlide extends Activity {
         final ArrayList<Float> line_x = new ArrayList<Float>();
         final ArrayList<Float> line_y = new ArrayList<Float>();
 
+
         slides_image_view.setOnTouchListener(new View.OnTouchListener() {
             float start_x;
             float start_y;
+            ArrayList<Float> line_x;
+            ArrayList<Float> line_y;
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -160,27 +182,36 @@ public class ShowSlide extends Activity {
                     return true;
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (canvas == null) {
-                            //bitmap = Bitmap.createBitmap(slides_image_view.getWidth(),slides_image_view.getHeight(),Bitmap.Config.ARGB_8888);
+                        if (bitmap == null) {
                             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-                            bitmap = Bitmap.createScaledBitmap(bitmap, slides_image_view.getWidth(), slides_image_view.getHeight(), false);
-                            canvas = new Canvas(bitmap);
-                            paint = new Paint();
-                            paint.setStrokeWidth(5);
-                            paint.setColor(Color.RED);
+                            bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
+                            canvas.setBitmap(bitmap);
                         }
+                        line_x = new ArrayList<Float>();
+                        line_y = new ArrayList<Float>();
                         start_x = motionEvent.getX();
                         start_y = motionEvent.getY();
+                        line_x.add(start_x);
+                        line_y.add(start_y);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float end_x = motionEvent.getX();
                         float end_y = motionEvent.getY();
                         canvas.drawLine(start_x, start_y, end_x, end_y, paint);
+                        line_x.add(end_x);
+                        line_y.add(end_y);
                         start_x = end_x;
                         start_y = end_y;
                         slides_image_view.setImageBitmap(bitmap);
                         break;
                     case MotionEvent.ACTION_UP:
+                        Message message = new Message();
+                        message.setOperation(Command.LINE);
+                        message.setScreenHeight(screen_height);
+                        message.setScreenWidth(screen_width);
+                        message.setLine_x(line_x);
+                        message.setLine_y(line_y);
+                        sendMessageObject(message);
                         break;
                     default:
                         break;
@@ -204,6 +235,18 @@ public class ShowSlide extends Activity {
             Log.d("Error", "Cannot send message");
         }
     }
+
+    private void sendMessageObject(Message message) {
+        Log.d("send", "send message object");
+        try {
+            ops.writeObject(message);
+            ops.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("Error", "Cannot send message");
+        }
+    }
+
 
     @Override
     public boolean onKeyDown(int keycode, KeyEvent e) {
@@ -230,6 +273,7 @@ public class ShowSlide extends Activity {
                 Log.d("Receive", "receive a message");
                 switch (message.getOperation()) {
                     case Command.IMAGE:
+                        System.out.println(message.getOperation());
                         displayImage(message);
                         break;
                     default:
@@ -247,7 +291,7 @@ public class ShowSlide extends Activity {
         byte[] image = message.getImageByteArray();
         bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-        bitmap = Bitmap.createScaledBitmap(bitmap, slides_image_view.getWidth(), slides_image_view.getHeight(), false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
         canvas.setBitmap(bitmap);
         runOnUiThread(new Runnable() {
             @Override

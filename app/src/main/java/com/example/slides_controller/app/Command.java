@@ -1,5 +1,7 @@
 package com.example.slides_controller.app;
 
+import java.net.Socket;
+
 /**
  * Created by saibi on 4/7/14.
  */
@@ -15,6 +17,7 @@ public class Command {
     static public final int PEN = 8;
     static public final int LASER = 9;
     static public final int HIGHLIGHT = 10;
-
     static public final int IMAGE = 11;
+    static public final int LINE = 12;
+    static public Socket server_socket = null;
 }
