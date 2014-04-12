@@ -62,14 +62,13 @@ public class Connect extends Activity {
             @Override
             public void onClick(View view) {
 
-                server_ip = "202.189.103.225";
+                server_ip = "202.189.127.31";
                 port_number = 52315;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             Socket socket = new Socket(server_ip, port_number);
-                            //socket.close();
                             Intent intent = new Intent(Connect.this, ShowSlide.class);
                             intent.putExtra("server_ip", server_ip);
                             intent.putExtra("port_number", port_number);
