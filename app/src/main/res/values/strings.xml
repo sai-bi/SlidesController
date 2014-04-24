@@ -5,5 +5,13 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_show_slide">ShowSlide</string>
+    <string name="choice_number_prompt">Choice number</string>
+    <string-array name="choice_number">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
 
 </resources>

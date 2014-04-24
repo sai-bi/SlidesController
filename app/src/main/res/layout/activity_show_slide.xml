@@ -3,10 +3,12 @@
     android:layout_height="fill_parent">
 
     <LinearLayout
+        android:id="@+id/slides_linear_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:visibility="visible">
 
-        <ImageView
+    <ImageView
             android:id="@+id/slides_image_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -16,15 +18,62 @@
 
 
     <LinearLayout
+        android:id="@+id/chart_linear_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <WebView
             android:id="@+id/chart_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:background="@drawable/background"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/choice_num_spinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/choice_number"
+                android:prompt="@string/choice_number_prompt" />
+
+            <Button
+                android:id="@+id/start_voting_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Start vote" />
+
+            <Button
+                android:id="@+id/pie_chart_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Pie chart" />
+
+            <Button
+                android:id="@+id/bar_chart_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Bar chart" />
+
+            <Button
+                android:id="@+id/refresh_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Refresh" />
+
+            <Button
+                android:id="@+id/exit_chart_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Exit" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -79,14 +128,6 @@
                 android:text="Previous"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
             <Button
                 android:id="@+id/next_button"
                 android:layout_width="0dp"
@@ -98,8 +139,16 @@
                 android:text="Next"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
+        </LinearLayout>
 
-            <Button
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+        <Button
                 android:id="@+id/black_screen_button"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
@@ -122,15 +171,6 @@
                 android:text="White"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
             <Button
                 android:id="@+id/pen_button"
                 android:layout_width="0dp"
@@ -155,8 +195,30 @@
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
 
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/highlighter_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Highlight"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/voting_button"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_horizontal"

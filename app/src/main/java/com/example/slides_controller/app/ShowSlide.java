@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,17 +37,28 @@ public class ShowSlide extends Activity {
     private Bitmap bitmap;
     private int screen_width;
     private int screen_height;
+    private int choice_number;
+    private boolean vote_in_progress;
+    private int chart_mode;
+    private ArrayList<Integer> choicer_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_slide);
 
+
         Intent intent = getIntent();
         final String server_ip = intent.getStringExtra("server_ip");
         final int port_number = intent.getIntExtra("port_number", 0);
         socket = Command.server_socket;
         pen_mode = false;
+
+        choice_number = 2;
+        vote_in_progress = false;
+        chart_mode = Term.PIE_CHART;
+        choicer_count = new ArrayList<Integer>();
+
         canvas = new Canvas();
         bitmap = null;
         paint = new Paint();
@@ -93,7 +107,22 @@ public class ShowSlide extends Activity {
         final Button pen_button = (Button) (findViewById(R.id.pen_button));
         final Button laser_button = (Button) (findViewById(R.id.laser_button));
         final Button highlighter_button = (Button) (findViewById(R.id.highlighter_button));
+        final Button voting_button = (Button) (findViewById(R.id.voting_button));
+        final Button start_voting_button = (Button) (findViewById(R.id.start_button));
+
         final LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout));
+        final LinearLayout slides_layout = (LinearLayout) (findViewById(R.id.slides_linear_layout));
+        final LinearLayout chart_layout = (LinearLayout) (findViewById(R.id.chart_linear_layout));
+        final Button pie_chart_button = (Button) (findViewById(R.id.pie_chart_button));
+        final Button bar_chart_button = (Button) (findViewById(R.id.bar_chart_button));
+
+        final Spinner choice_number_spinner = (Spinner) (findViewById(R.id.choice_num_spinner));
+
+        final WebView chart_view = (WebView) (findViewById(R.id.chart_view));
+        final Button exit_chart_button = (Button) (findViewById(R.id.exit_chart_button));
+
+
+
 
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +191,70 @@ public class ShowSlide extends Activity {
                 menu_layout.setVisibility(View.GONE);
             }
         });
+
+        voting_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu_layout.setVisibility(View.GONE);
+                slides_layout.setVisibility(View.GONE);
+                chart_layout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        choice_number_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                choice_number = i + 2;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                choice_number = 2;
+            }
+        });
+
+        start_voting_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (start_voting_button.getText().equals("Start vote")) {
+                    start_voting_button.setText("End vote");
+                    vote_in_progress = true;
+                    sendMessage(Command.CREATE_VOTE);
+                    choicer_count.clear();
+                    for (int i = 0; i < choice_number; i++) {
+                        choicer_count.add(0);
+                    }
+                } else {
+                    start_voting_button.setText("Start vote");
+                    vote_in_progress = false;
+                }
+            }
+        });
+
+        pie_chart_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chart_mode = Term.PIE_CHART;
+            }
+        });
+
+        bar_chart_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chart_mode = Term.BAR_CHART;
+            }
+        });
+
+        exit_chart_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                start_voting_button.setText("Start vote");
+                chart_mode = Term.PIE_CHART;
+                vote_in_progress = false;
+            }
+        });
     }
+
 
     private void setImageViewListener() {
         final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
@@ -275,6 +367,9 @@ public class ShowSlide extends Activity {
                     case Command.IMAGE:
                         System.out.println(message.getOperation());
                         displayImage(message);
+                        break;
+                    case Command.VOTE_CHOICE:
+                        
                         break;
                     default:
                         break;
