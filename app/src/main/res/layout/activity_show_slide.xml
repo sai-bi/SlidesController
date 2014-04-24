@@ -16,6 +16,20 @@
 
 
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <WebView
+            android:id="@+id/chart_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/background"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/menu_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -44,7 +44,7 @@ public class ShowSlide extends Activity {
         final String server_ip = intent.getStringExtra("server_ip");
         final int port_number = intent.getIntExtra("port_number", 0);
         socket = Command.server_socket;
-        pen_mode = true;
+        pen_mode = false;
         canvas = new Canvas();
         bitmap = null;
         paint = new Paint();
@@ -279,7 +279,6 @@ public class ShowSlide extends Activity {
                     default:
                         break;
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -299,7 +298,6 @@ public class ShowSlide extends Activity {
                 slides_image_view.setImageBitmap(bitmap);
             }
         });
-
     }
 
 }

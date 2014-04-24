@@ -19,5 +19,7 @@ public class Command {
     static public final int HIGHLIGHT = 10;
     static public final int IMAGE = 11;
     static public final int LINE = 12;
+    static public final int WATCHER = 0;
+    static public final int SPEAKER = 1;
     static public Socket server_socket = null;
 }

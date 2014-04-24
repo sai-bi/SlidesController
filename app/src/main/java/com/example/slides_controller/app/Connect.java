@@ -15,8 +15,7 @@ import java.net.Socket;
 
 public class Connect extends Activity {
 
-    static private final int WATCHER = 0;
-    static private final int SPEAKER = 1;
+
     private int role_id;
     private String server_ip;
     private int port_number;
@@ -34,7 +33,7 @@ public class Connect extends Activity {
         final EditText port_num_input;
 
 
-        role_id = WATCHER;
+        role_id = Command.WATCHER;
         connect_btn = (Button) (findViewById(R.id.connect_btn));
         role_radio_group = (RadioGroup) (findViewById(R.id.role_group));
         password_input = (EditText) (findViewById(R.id.password));
@@ -44,14 +43,14 @@ public class Connect extends Activity {
         role_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (role_id == SPEAKER) {
+                if (role_id == Command.SPEAKER) {
                     // set gone
                     password_input.setVisibility(View.GONE);
-                    role_id = WATCHER;
+                    role_id = Command.WATCHER;
                 } else {
                     // set visible
                     password_input.setVisibility(View.VISIBLE);
-                    role_id = SPEAKER;
+                    role_id = Command.SPEAKER;
                 }
             }
         });
@@ -63,7 +62,7 @@ public class Connect extends Activity {
             @Override
             public void onClick(View view) {
 
-                server_ip = "202.189.127.31";
+                server_ip = "147.8.58.174";
                 port_number = 52315;
                 new Thread(new Runnable() {
                     @Override
@@ -74,6 +73,7 @@ public class Connect extends Activity {
                             Intent intent = new Intent(Connect.this, ShowSlide.class);
                             intent.putExtra("server_ip", server_ip);
                             intent.putExtra("port_number", port_number);
+                            intent.putExtra("role", role_id);
                             startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
