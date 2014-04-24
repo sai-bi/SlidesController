@@ -19,8 +19,8 @@ public class Command {
     static public final int HIGHLIGHT = 10;
     static public final int IMAGE = 11;
     static public final int LINE = 12;
-    static public final int WATCHER = 0;
-    static public final int SPEAKER = 1;
+    static public final int WATCHER = 15;
+    static public final int SPEAKER = 16;
     static public final int CREATE_VOTE = 13;
     static public final int VOTE_CHOICE = 14;
     static public Socket server_socket = null;

@@ -10,12 +10,16 @@ public class Message implements Serializable {
     private byte[] image;
     private int screen_width;
     private int screen_height;
+    private int vote_choice;
+    private int vote_num;
+
     public Message() {
         line_x = new ArrayList<Float>();
         line_y = new ArrayList<Float>();
         operation = 0;
         screen_height = 0;
         screen_width = 0;
+        vote_choice = 0;
     }
 
     public int getScreenWidth() {
@@ -65,9 +69,20 @@ public class Message implements Serializable {
     public void setImageByteArray(byte[] image) {
         this.image = image.clone();
     }
+
+    public int getChoice() {
+        return this.vote_choice;
+    }
+
+    public void setChoice(int choice) {
+        this.vote_choice = choice;
+    }
+
+    public int getVoteNum() {
+        return this.vote_num;
+    }
+
+    public void setVoteNum(int num) {
+        this.vote_num = num;
+    }
 }
-
-
-
-
-

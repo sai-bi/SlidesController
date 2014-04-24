@@ -225,7 +225,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/top_bg"
                 android:padding="10dp"
-                android:text="Highlight"
+                android:text="Vote"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
 

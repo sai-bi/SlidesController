@@ -62,7 +62,7 @@ public class Connect extends Activity {
             @Override
             public void onClick(View view) {
 
-                server_ip = "147.8.58.174";
+                server_ip = "202.189.127.221";
                 port_number = 52315;
                 new Thread(new Runnable() {
                     @Override

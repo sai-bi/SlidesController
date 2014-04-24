@@ -1,6 +1,8 @@
 package com.example.slides_controller.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,7 +42,7 @@ public class ShowSlide extends Activity {
     private int choice_number;
     private boolean vote_in_progress;
     private int chart_mode;
-    private ArrayList<Integer> choicer_count;
+    private ArrayList<Integer> choice_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class ShowSlide extends Activity {
         choice_number = 2;
         vote_in_progress = false;
         chart_mode = Term.PIE_CHART;
-        choicer_count = new ArrayList<Integer>();
+        choice_count = new ArrayList<Integer>();
 
         canvas = new Canvas();
         bitmap = null;
@@ -108,7 +110,7 @@ public class ShowSlide extends Activity {
         final Button laser_button = (Button) (findViewById(R.id.laser_button));
         final Button highlighter_button = (Button) (findViewById(R.id.highlighter_button));
         final Button voting_button = (Button) (findViewById(R.id.voting_button));
-        final Button start_voting_button = (Button) (findViewById(R.id.start_button));
+        final Button start_voting_button = (Button) (findViewById(R.id.start_voting_button));
 
         final LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout));
         final LinearLayout slides_layout = (LinearLayout) (findViewById(R.id.slides_linear_layout));
@@ -216,18 +218,27 @@ public class ShowSlide extends Activity {
         start_voting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (start_voting_button.getText().equals("Start vote")) {
+                System.out.println("start vote...");
+                Log.d("vote", "start vote");
+
+
+                if (start_voting_button.getText().toString().equals("Start vote")) {
                     start_voting_button.setText("End vote");
                     vote_in_progress = true;
-                    sendMessage(Command.CREATE_VOTE);
-                    choicer_count.clear();
+                    Message message = new Message();
+                    message.setOperation(Command.CREATE_VOTE);
+                    message.setVoteNum(choice_number);
+                    sendMessageObject(message);
+                    //sendMessage(Command.CREATE_VOTE);
+                    choice_count.clear();
                     for (int i = 0; i < choice_number; i++) {
-                        choicer_count.add(0);
+                        choice_count.add(0);
                     }
                 } else {
                     start_voting_button.setText("Start vote");
                     vote_in_progress = false;
                 }
+
             }
         });
 
@@ -251,6 +262,9 @@ public class ShowSlide extends Activity {
                 start_voting_button.setText("Start vote");
                 chart_mode = Term.PIE_CHART;
                 vote_in_progress = false;
+                menu_layout.setVisibility(View.GONE);
+                chart_layout.setVisibility(View.GONE);
+                slides_layout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -329,6 +343,7 @@ public class ShowSlide extends Activity {
     }
 
     private void sendMessageObject(Message message) {
+
         Log.d("send", "send message object");
         try {
             ops.writeObject(message);
@@ -342,6 +357,9 @@ public class ShowSlide extends Activity {
 
     @Override
     public boolean onKeyDown(int keycode, KeyEvent e) {
+        if (vote_in_progress == true) {
+            return false;
+        }
         if (keycode == KeyEvent.KEYCODE_MENU) {
             LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout));
             if (menu_layout.getVisibility() == View.VISIBLE) {
@@ -369,7 +387,16 @@ public class ShowSlide extends Activity {
                         displayImage(message);
                         break;
                     case Command.VOTE_CHOICE:
-                        
+                        if (vote_in_progress == false) {
+                            break;
+                        }
+                        int choice = message.getChoice();
+                        int temp = choice_count.get(choice);
+                        choice_count.set(choice, temp + 1);
+                        updateChart();
+                        break;
+                    case Command.CREATE_VOTE:
+                        showVoteDialog(message.getVoteNum());
                         break;
                     default:
                         break;
@@ -379,6 +406,27 @@ public class ShowSlide extends Activity {
             e.printStackTrace();
             Log.d("Receive error", "Error in receiving message");
         }
+    }
+
+    private void showVoteDialog(int choice_number) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShowSlide.this);
+        builder.setMessage("Choose an answer");
+        String choice[] = new String[choice_number];
+        for (int i = 0; i < choice_number; i++) {
+            choice[i] = "" + (char) (65 + i);
+        }
+
+        builder.setItems(choice, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Message message = new Message();
+                message.setOperation(Command.VOTE_CHOICE);
+                message.setChoice(i);
+                sendMessageObject(message);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     private void displayImage(Message message) {
@@ -395,4 +443,50 @@ public class ShowSlide extends Activity {
         });
     }
 
+    private void updateChart() {
+        final WebView chart_view = (WebView) (findViewById(R.id.chart_view));
+        String url = "http://chart.apis.google.com/chart?";
+        String cht = "cht=";
+        String chd = "chd=t:";
+        String chs = "chs=";
+        String chl = "chl=";
+        String chxt = "chxt=x,y";
+        String chxl = "chxl=0:|";
+        String chco = "chco=";
+        String chbh = "chbh=a";
+        String color[] = {"FFC6A5", "FFFF42", "DEF3BD", "00A5C6", "DEBDDE", "C6EFF7"};
+
+
+        for (int i = 0; i < choice_number; i++) {
+            chl = chl + (char) (65 + i);
+            chxl = chxl + (char) (65 + i);
+            chd = chd + choice_count.get(i).toString();
+            chco = chco + color[i];
+            if (i < choice_number - 1) {
+                chl = chl + "|";
+                chd = chd + ",";
+                chxl = chxl + "|";
+                chco = chco + "|";
+            }
+        }
+        chs = "chs=500x300";
+
+        if (chart_mode == Term.PIE_CHART) {
+            cht = "cht=p";
+            url = url + cht + "&" + chd + "&" + chs + "&" + chl + "&" + chco;
+        } else {
+            cht = "cht=bvg";
+            url = url + cht + "&" + chd + "&" + chxl + "&" + chxt + "&" + chbh + "&" + chco + "&" + chs;
+        }
+
+        //System.out.println(url);
+        Log.d("url", url);
+        final String url_copy = url;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chart_view.loadUrl(url_copy);
+            }
+        });
+    }
 }
