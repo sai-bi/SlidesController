@@ -284,8 +284,9 @@ public class ShowSlide extends Activity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (pen_mode == false)
+                if (pen_mode == false) {
                     return true;
+                }
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (bitmap == null) {

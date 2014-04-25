@@ -69,6 +69,8 @@ public class Connect extends Activity {
                     public void run() {
                         try {
                             Socket socket = new Socket(server_ip, port_number);
+                            // check password
+
                             Command.server_socket = socket;
                             Intent intent = new Intent(Connect.this, ShowSlide.class);
                             intent.putExtra("server_ip", server_ip);
