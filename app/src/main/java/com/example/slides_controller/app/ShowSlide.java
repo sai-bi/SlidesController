@@ -15,9 +15,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -122,7 +125,7 @@ public class ShowSlide extends Activity {
 
         final WebView chart_view = (WebView) (findViewById(R.id.chart_view));
         final Button exit_chart_button = (Button) (findViewById(R.id.exit_chart_button));
-
+        final HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
 
 
 
@@ -130,42 +133,50 @@ public class ShowSlide extends Activity {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.START_DISPLAY);
-                menu_layout.setVisibility(View.GONE);
+                //menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+
             }
         });
         end_button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.END_DISPLAY);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
             }
         });
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.NEXT_SLIDE);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
         previous_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.PREVIOUS_SLIDE);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
         black_screen_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.BLACK_SCREEN);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
         white_screen_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.WHITE_SCREEN);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
 
@@ -173,7 +184,8 @@ public class ShowSlide extends Activity {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.PEN);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
                 pen_mode = true;
             }
         });
@@ -182,7 +194,8 @@ public class ShowSlide extends Activity {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.LASER);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
 
@@ -190,14 +203,16 @@ public class ShowSlide extends Activity {
             @Override
             public void onClick(View view) {
                 sendMessage(Command.HIGHLIGHT);
-                menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
+                //menu_layout.setVisibility(View.GONE);
             }
         });
 
         voting_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menu_layout.setVisibility(View.GONE);
+                //menu_layout.setVisibility(View.GONE);
+                menuLayoutGone();
                 slides_layout.setVisibility(View.GONE);
                 chart_layout.setVisibility(View.VISIBLE);
             }
@@ -262,11 +277,19 @@ public class ShowSlide extends Activity {
                 start_voting_button.setText("Start vote");
                 chart_mode = Term.PIE_CHART;
                 vote_in_progress = false;
-                menu_layout.setVisibility(View.GONE);
+                menu_scroll_view.setVisibility(View.GONE);
                 chart_layout.setVisibility(View.GONE);
                 slides_layout.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void menuLayoutGone() {
+        //LinearLayout menu_layout = (LinearLayout)(findViewById(R.id.menu_layout));
+        HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
+        menu_scroll_view.setVisibility(View.GONE);
+        Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_up);
+        menu_scroll_view.setAnimation(slide);
     }
 
 
@@ -284,6 +307,7 @@ public class ShowSlide extends Activity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                menuLayoutGone();
                 if (pen_mode == false) {
                     return true;
                 }
@@ -362,12 +386,19 @@ public class ShowSlide extends Activity {
             return false;
         }
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout));
+            //LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout))
+            //menu_layout.setVisibility(View.VISIBLE);
+            HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
+            menu_scroll_view.setVisibility(View.VISIBLE);
+            /*
             if (menu_layout.getVisibility() == View.VISIBLE) {
                 menu_layout.setVisibility(View.GONE);
             } else {
                 menu_layout.setVisibility(View.VISIBLE);
             }
+            */
+            Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
+            menu_scroll_view.setAnimation(slide);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_UP) {
             sendMessage(Command.PREVIOUS_SLIDE);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {

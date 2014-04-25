@@ -62,7 +62,7 @@ public class Connect extends Activity {
             @Override
             public void onClick(View view) {
 
-                server_ip = "202.189.127.221";
+                server_ip = "202.189.103.108";
                 port_number = 52315;
                 new Thread(new Runnable() {
                     @Override
@@ -70,7 +70,6 @@ public class Connect extends Activity {
                         try {
                             Socket socket = new Socket(server_ip, port_number);
                             // check password
-
                             Command.server_socket = socket;
                             Intent intent = new Intent(Connect.this, ShowSlide.class);
                             intent.putExtra("server_ip", server_ip);

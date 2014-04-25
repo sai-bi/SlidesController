@@ -73,10 +73,149 @@
                 android:layout_height="wrap_content"
                 android:text="Exit" />
         </LinearLayout>
-
     </LinearLayout>
 
 
+    <HorizontalScrollView
+        android:id="@+id/menu_scroll_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/top_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Start"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/end_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="End"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/previous_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Previous"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/next_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Next"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/black_screen_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Black"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/white_screen_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="White"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/pen_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Pen"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/laser_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Laser"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/highlighter_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Highlight"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/voting_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Vote"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <!--
     <LinearLayout
         android:id="@+id/menu_layout"
         android:layout_width="fill_parent"
@@ -231,6 +370,6 @@
                 android:textSize="30dp" />
         </LinearLayout>
     </LinearLayout>
-
+    -->
 
 </FrameLayout>
