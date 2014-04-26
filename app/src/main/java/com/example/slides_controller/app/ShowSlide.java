@@ -234,7 +234,7 @@ public class ShowSlide extends Activity {
         menu_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                menu_button.clearAnimation();
                 watcher_list_view.setVisibility(View.GONE);
                 int visible = menu_scroll_view.getVisibility();
 
@@ -493,6 +493,17 @@ public class ShowSlide extends Activity {
                         break;
                     case Command.AUTHORIZE:
                         authorized = true;
+                        // start animation
+                        
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Button menu_button = (Button) (findViewById(R.id.menu_button));
+                                Animation fade = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.fade_in_out);
+                                menu_button.startAnimation(fade);
+                            }
+                        });
+
                         break;
                     case Command.CANCEL_AUTHORIZE:
                         authorized = false;
