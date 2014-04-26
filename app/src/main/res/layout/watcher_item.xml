@@ -15,7 +15,7 @@
         android:id="@+id/watcher_image_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/menu1"
+        android:background="@drawable/menu"
         android:visibility="invisible" />
 
 </LinearLayout>

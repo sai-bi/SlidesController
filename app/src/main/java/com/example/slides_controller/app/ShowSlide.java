@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,10 +24,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.ViewSwitcher;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -132,7 +136,6 @@ public class ShowSlide extends Activity {
         final Button white_screen_button = (Button) (findViewById(R.id.white_screen_button));
         final Button black_screen_button = (Button) (findViewById(R.id.black_screen_button));
         final Button pen_button = (Button) (findViewById(R.id.pen_button));
-        final Button laser_button = (Button) (findViewById(R.id.laser_button));
         final Button highlighter_button = (Button) (findViewById(R.id.highlighter_button));
         final Button voting_button = (Button) (findViewById(R.id.voting_button));
         final Button start_voting_button = (Button) (findViewById(R.id.start_voting_button));
@@ -155,8 +158,8 @@ public class ShowSlide extends Activity {
         final LinearLayout watcher_list_layout = (LinearLayout) (findViewById(R.id.watcher_list_layout));
 
         final Button clear_button = (Button) (findViewById(R.id.clear_button));
-        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-
+//        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+        final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
 
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,13 +215,6 @@ public class ShowSlide extends Activity {
             }
         });
 
-        laser_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(Command.LASER);
-                menuLayoutGone();
-            }
-        });
 
         highlighter_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,7 +343,14 @@ public class ShowSlide extends Activity {
         clear_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                slides_image_view.setImageBitmap(last_bitmap);
+
+                // bisai
+                //slides_image_view.setImageBitmap(last_bitmap);
+                Drawable drawable = new BitmapDrawable(last_bitmap);
+                slides_image_view.setImageDrawable(drawable);
+
+
+
                 sendMessage(Command.CLEAR);
             }
         });
@@ -374,7 +377,22 @@ public class ShowSlide extends Activity {
 
 
     private void setImageViewListener() {
-        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+//        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+        // bisai
+        final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
+
+        slides_image_view.setInAnimation(AnimationUtils.loadAnimation(ShowSlide.this, R.anim.slide_in));
+        slides_image_view.setOutAnimation(AnimationUtils.loadAnimation(ShowSlide.this, R.anim.slide_out));
+        slides_image_view.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imageView = new ImageView(ShowSlide.this);
+
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(screen_width, screen_height));
+                return imageView;
+            }
+        });
+
         final ArrayList<Float> line_x = new ArrayList<Float>();
         final ArrayList<Float> line_y = new ArrayList<Float>();
 
@@ -415,7 +433,8 @@ public class ShowSlide extends Activity {
                         line_y.add(end_y);
                         start_x = end_x;
                         start_y = end_y;
-                        slides_image_view.setImageBitmap(bitmap);
+                        Drawable drawable = new BitmapDrawable(bitmap);
+                        slides_image_view.setImageDrawable(drawable);
                         break;
                     case MotionEvent.ACTION_UP:
                         Message message = new Message();
@@ -529,8 +548,11 @@ public class ShowSlide extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-                                slides_image_view.setImageBitmap(last_bitmap);
+//                                ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+
+                                // bisai
+                                ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
+                                slides_image_view.setImageDrawable(new BitmapDrawable(last_bitmap));
                             }
                         });
                         break;
@@ -554,7 +576,11 @@ public class ShowSlide extends Activity {
                 int origin_height = message.getScreenHeight();
                 float height_ratio = screen_height / (float) origin_height;
                 float width_ratio = screen_width / (float) origin_width;
-                final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+//                final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+                // bisai
+                final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
+
+
                 if (bitmap == null) {
                     bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
                     bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
@@ -569,7 +595,11 @@ public class ShowSlide extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    slides_image_view.setImageBitmap(bitmap);
+
+                    // bisai
+                    Drawable drawable = new BitmapDrawable(bitmap);
+
+                    slides_image_view.setImageDrawable(drawable);
                 }
             }
         });
@@ -599,14 +629,18 @@ public class ShowSlide extends Activity {
     private void displayImage(Message message) {
         byte[] image = message.getImageByteArray();
         bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+//        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+        // bisai
+        final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
         bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
+
+
         last_bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
         canvas.setBitmap(bitmap);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                slides_image_view.setImageBitmap(bitmap);
+                slides_image_view.setImageDrawable(new BitmapDrawable(bitmap));
             }
         });
     }
