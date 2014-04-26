@@ -15,6 +15,7 @@ public class Message implements Serializable {
     private int watcher_id;
     private String watcher_name;
     private int request_speaker_id;
+    private int authorize_id;
 
     public Message() {
         line_x = new ArrayList<Float>();
@@ -115,5 +116,13 @@ public class Message implements Serializable {
 
     public void setRequestId(int id) {
         request_speaker_id = id;
+    }
+
+    public int getAuthorize_id() {
+        return authorize_id;
+    }
+
+    public void setAuthorize_id(int id) {
+        this.authorize_id = id;
     }
 }

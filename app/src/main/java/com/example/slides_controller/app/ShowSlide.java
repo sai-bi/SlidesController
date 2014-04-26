@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -49,6 +50,10 @@ public class ShowSlide extends Activity {
     private ArrayList<Integer> choice_count;
     private ArrayList<String> watcher_name_list;
     private ArrayList<Integer> watcher_id_list;
+    private ArrayAdapter<String> watcher_listview_adapter;
+    private int last_authorize_id;
+    private boolean authorized;
+    // private List<Map<String, Object>> watcher_listview_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,13 @@ public class ShowSlide extends Activity {
         socket = Command.server_socket;
         pen_mode = false;
 
+        int role = intent.getIntExtra("role", Command.WATCHER);
+        if (role == Command.SPEAKER) {
+            authorized = true;
+        } else {
+            authorized = false;
+        }
+
         choice_number = 2;
         vote_in_progress = false;
         chart_mode = Term.PIE_CHART;
@@ -69,6 +81,7 @@ public class ShowSlide extends Activity {
 
         watcher_name_list = new ArrayList<String>();
         watcher_id_list = new ArrayList<Integer>();
+        last_authorize_id = -1;
 
         canvas = new Canvas();
         bitmap = null;
@@ -136,6 +149,7 @@ public class ShowSlide extends Activity {
         final Button watcher_list_button = (Button) (findViewById(R.id.watcher_list_button));
 
         final ListView watcher_list_view = (ListView) (findViewById(R.id.watcher_list_view));
+        final LinearLayout watcher_list_layout = (LinearLayout) (findViewById(R.id.watcher_list_layout));
 
 
         start_button.setOnClickListener(new View.OnClickListener() {
@@ -220,13 +234,17 @@ public class ShowSlide extends Activity {
         menu_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 watcher_list_view.setVisibility(View.GONE);
                 int visible = menu_scroll_view.getVisibility();
+
                 if (visible == View.VISIBLE) {
+                    Log.d("click", "visible");
                     menu_scroll_view.setVisibility(View.GONE);
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_up);
                     menu_scroll_view.setAnimation(slide);
                 } else {
+                    Log.d("click", "invisible");
                     menu_scroll_view.setVisibility(View.VISIBLE);
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
                     menu_scroll_view.setAnimation(slide);
@@ -237,13 +255,16 @@ public class ShowSlide extends Activity {
         watcher_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menu_layout.setVisibility(View.GONE);
+                menu_scroll_view.setVisibility(View.GONE);
                 int visible = watcher_list_view.getVisibility();
+
                 if (visible == View.VISIBLE) {
+
                     watcher_list_view.setVisibility(View.GONE);
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_left);
                     watcher_list_view.setAnimation(slide);
                 } else {
+
                     watcher_list_view.setVisibility(View.VISIBLE);
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_right);
                     watcher_list_view.setAnimation(slide);
@@ -352,9 +373,10 @@ public class ShowSlide extends Activity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 menuLayoutGone();
                 watcherListViewGone();
-                if (pen_mode == false) {
+                if (pen_mode == false || authorized == false) {
                     return true;
                 }
                 switch (motionEvent.getAction()) {
@@ -468,7 +490,12 @@ public class ShowSlide extends Activity {
                     case Command.CLIENTINFO:
                         watcher_id_list.add(message.getWatcher_id());
                         watcher_name_list.add(message.getWatcher_name());
-
+                        break;
+                    case Command.AUTHORIZE:
+                        authorized = true;
+                        break;
+                    case Command.CANCEL_AUTHORIZE:
+                        authorized = false;
                         break;
                     default:
                         break;
@@ -564,9 +591,54 @@ public class ShowSlide extends Activity {
 
 
     private void setWatcherListview() {
+        watcher_listview_adapter = new ArrayAdapter<String>(this, R.layout.watcher_item, R.id.watcher_name_text_view, watcher_name_list);
 
+        final ListView watcher_list_view = (ListView) (findViewById(R.id.watcher_list_view));
+        watcher_list_view.setAdapter(watcher_listview_adapter);
 
+        watcher_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ImageView imageView = (ImageView) (findViewById(R.id.watcher_image_view));
+                if (watcher_id_list.get(i) == last_authorize_id) {
+                    // cancel the authorization
+                    imageView.setVisibility(View.INVISIBLE);
+                    Message message = new Message();
+                    message.setOperation(Command.CANCEL_AUTHORIZE);
+                    message.setAuthorize_id(last_authorize_id);
+                    sendMessageObject(message);
+                    last_authorize_id = -1;
+                } else if (last_authorize_id == -1) {
+                    // give authorization
+                    imageView.setBackgroundResource(R.drawable.authorize);
+                    imageView.setVisibility(View.VISIBLE);
+                    //sendMessage(Command.AUTHORIZE);
+                    Message message = new Message();
+                    message.setOperation(Command.AUTHORIZE);
+                    message.setAuthorize_id(watcher_id_list.get(i));
+                    sendMessageObject(message);
+                    last_authorize_id = watcher_id_list.get(i);
+                } else if (watcher_id_list.get(i) != last_authorize_id) {
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setBackgroundResource(R.drawable.authorize);
+                    Message message = new Message();
+                    message.setOperation(Command.AUTHORIZE);
+                    message.setAuthorize_id(watcher_id_list.get(i));
+                    sendMessageObject(message);
+                    last_authorize_id = watcher_id_list.get(i);
+
+                    int last_index = watcher_id_list.indexOf(last_authorize_id);
+                    View v = watcher_list_view.getChildAt(last_index);
+                    ImageView temp = (ImageView) (v.findViewById(R.id.watcher_image_view));
+                    temp.setVisibility(View.GONE);
+                    Message message1 = new Message();
+                    message1.setOperation(Command.CANCEL_AUTHORIZE);
+                    message1.setAuthorize_id(last_authorize_id);
+                    sendMessageObject(message);
+                    temp.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
-
 
 }

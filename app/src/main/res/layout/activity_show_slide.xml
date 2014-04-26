@@ -103,7 +103,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
-        android:visibility="visible">
+        android:visibility="invisible">
 
     <LinearLayout
             android:id="@+id/menu_layout"
@@ -236,16 +236,22 @@
     </HorizontalScrollView>
 
     <LinearLayout
+        android:id="@+id/watcher_list_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:gravity="right">
+        android:gravity="right"
+        android:visibility="visible">
 
         <ListView
             android:id="@+id/watcher_list_view"
+
+
             android:layout_width="150dp"
             android:layout_height="fill_parent"
             android:background="@drawable/top_bg"
-            android:visibility="gone"></ListView>
+            android:visibility="invisible">
+
+        </ListView>
 
 
     </LinearLayout>
