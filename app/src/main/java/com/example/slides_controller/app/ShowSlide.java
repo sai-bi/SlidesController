@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.io.ObjectInputStream;
@@ -127,6 +128,10 @@ public class ShowSlide extends Activity {
         final Button exit_chart_button = (Button) (findViewById(R.id.exit_chart_button));
         final HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
 
+        final Button menu_button = (Button) (findViewById(R.id.menu_button));
+        final Button watcher_list_button = (Button) (findViewById(R.id.watcher_list_button));
+
+        final ListView watcher_list_view = (ListView) (findViewById(R.id.watcher_list_view));
 
 
         start_button.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +222,40 @@ public class ShowSlide extends Activity {
                 chart_layout.setVisibility(View.VISIBLE);
             }
         });
+
+        menu_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int visible = menu_scroll_view.getVisibility();
+                if (visible == View.VISIBLE) {
+                    menu_scroll_view.setVisibility(View.GONE);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_up);
+                    menu_scroll_view.setAnimation(slide);
+                } else {
+                    menu_scroll_view.setVisibility(View.VISIBLE);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
+                    menu_scroll_view.setAnimation(slide);
+                }
+            }
+        });
+
+        watcher_list_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int visible = watcher_list_view.getVisibility();
+                if (visible == View.VISIBLE) {
+                    watcher_list_view.setVisibility(View.GONE);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_left);
+                    watcher_list_view.setAnimation(slide);
+                } else {
+                    watcher_list_view.setVisibility(View.VISIBLE);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_right);
+                    watcher_list_view.setAnimation(slide);
+                }
+            }
+        });
+
+
 
         choice_number_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -388,17 +427,10 @@ public class ShowSlide extends Activity {
         if (keycode == KeyEvent.KEYCODE_MENU) {
             //LinearLayout menu_layout = (LinearLayout) (findViewById(R.id.menu_layout))
             //menu_layout.setVisibility(View.VISIBLE);
-            HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
-            menu_scroll_view.setVisibility(View.VISIBLE);
-            /*
-            if (menu_layout.getVisibility() == View.VISIBLE) {
-                menu_layout.setVisibility(View.GONE);
-            } else {
-                menu_layout.setVisibility(View.VISIBLE);
-            }
-            */
-            Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
-            menu_scroll_view.setAnimation(slide);
+            //HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
+            //menu_scroll_view.setVisibility(View.VISIBLE);
+            //Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
+            //menu_scroll_view.setAnimation(slide);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_UP) {
             sendMessage(Command.PREVIOUS_SLIDE);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {

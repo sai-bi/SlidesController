@@ -15,6 +15,28 @@
             android:background="@drawable/background" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/menu_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/menu1" />
+
+        <Button
+            android:id="@+id/watcher_list_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/list" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/chart_linear_layout"
@@ -25,7 +47,7 @@
 
         <WebView
             android:id="@+id/chart_view"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="@drawable/background"
@@ -85,7 +107,7 @@
 
         <LinearLayout
             android:id="@+id/menu_layout"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:background="@drawable/top_bg"
             android:gravity="center_vertical"
@@ -210,166 +232,29 @@
                 android:text="Vote"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
-
         </LinearLayout>
     </HorizontalScrollView>
 
-
-    <!--
     <LinearLayout
-        android:id="@+id/menu_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/top_bg"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:gravity="right">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <ListView
+            android:id="@+id/watcher_list_view"
+            android:layout_width="150dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/start_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Start"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/end_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="End"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/previous_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Previous"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/next_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Next"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:background="@drawable/top_bg"
+            android:visibility="gone"></ListView>
 
 
-            <Button
-                android:id="@+id/black_screen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Black"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/white_screen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="White"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/pen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Pen"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/laser_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Laser"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/highlighter_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Highlight"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/voting_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Vote"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-        </LinearLayout>
     </LinearLayout>
-    -->
+
+
+
+
+
+
+
 
 </FrameLayout>
