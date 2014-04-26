@@ -53,6 +53,8 @@ public class ShowSlide extends Activity {
     private ArrayAdapter<String> watcher_listview_adapter;
     private int last_authorize_id;
     private boolean authorized;
+
+    private Bitmap last_bitmap;
     // private List<Map<String, Object>> watcher_listview_data;
 
     @Override
@@ -85,6 +87,7 @@ public class ShowSlide extends Activity {
 
         canvas = new Canvas();
         bitmap = null;
+        last_bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         paint = new Paint();
         paint.setStrokeWidth(5);
         paint.setColor(Color.RED);
@@ -150,6 +153,9 @@ public class ShowSlide extends Activity {
 
         final ListView watcher_list_view = (ListView) (findViewById(R.id.watcher_list_view));
         final LinearLayout watcher_list_layout = (LinearLayout) (findViewById(R.id.watcher_list_layout));
+
+        final Button clear_button = (Button) (findViewById(R.id.clear_button));
+        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
 
 
         start_button.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +343,14 @@ public class ShowSlide extends Activity {
                 slides_layout.setVisibility(View.VISIBLE);
             }
         });
+
+        clear_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slides_image_view.setImageBitmap(last_bitmap);
+                sendMessage(Command.CLEAR);
+            }
+        });
     }
 
     private void menuLayoutGone() {
@@ -474,6 +488,10 @@ public class ShowSlide extends Activity {
                     case Command.IMAGE:
                         System.out.println(message.getOperation());
                         displayImage(message);
+
+                        break;
+                    case Command.LINE:
+                        drawLine(message);
                         break;
                     case Command.VOTE_CHOICE:
                         if (vote_in_progress == false) {
@@ -494,7 +512,7 @@ public class ShowSlide extends Activity {
                     case Command.AUTHORIZE:
                         authorized = true;
                         // start animation
-                        
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -503,10 +521,18 @@ public class ShowSlide extends Activity {
                                 menu_button.startAnimation(fade);
                             }
                         });
-
                         break;
                     case Command.CANCEL_AUTHORIZE:
                         authorized = false;
+                        break;
+                    case Command.CLEAR:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+                                slides_image_view.setImageBitmap(last_bitmap);
+                            }
+                        });
                         break;
                     default:
                         break;
@@ -516,6 +542,37 @@ public class ShowSlide extends Activity {
             e.printStackTrace();
             Log.d("Receive error", "Error in receiving message");
         }
+    }
+
+    private void drawLine(final Message message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Float> line_x = message.getLine_x();
+                ArrayList<Float> line_y = message.getLine_y();
+                int origin_width = message.getScreenWidth();
+                int origin_height = message.getScreenHeight();
+                float height_ratio = screen_height / (float) origin_height;
+                float width_ratio = screen_width / (float) origin_width;
+                final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
+                if (bitmap == null) {
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
+                    canvas.setBitmap(bitmap);
+                }
+
+                for (int i = 1; i < line_x.size() && i < line_y.size(); i++) {
+                    canvas.drawLine(line_x.get(i - 1) * width_ratio, line_y.get(i - 1) * height_ratio, line_x.get(i) * width_ratio, line_y.get(i) * height_ratio, paint);
+
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    slides_image_view.setImageBitmap(bitmap);
+                }
+            }
+        });
     }
 
     private void showVoteDialog(int choice_number) {
@@ -544,6 +601,7 @@ public class ShowSlide extends Activity {
         bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
         bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
+        last_bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
         canvas.setBitmap(bitmap);
         runOnUiThread(new Runnable() {
             @Override

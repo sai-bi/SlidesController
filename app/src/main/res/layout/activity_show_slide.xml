@@ -103,12 +103,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
-        android:visibility="invisible">
+        android:visibility="gone">
 
-    <LinearLayout
+        <LinearLayout
             android:id="@+id/menu_layout"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/top_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -232,6 +232,20 @@
                 android:text="Vote"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/clear_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/top_bg"
+                android:padding="10dp"
+                android:text="Clear"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp" />
+
+
         </LinearLayout>
     </HorizontalScrollView>
 

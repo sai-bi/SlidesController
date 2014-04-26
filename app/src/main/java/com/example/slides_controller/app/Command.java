@@ -26,5 +26,6 @@ public class Command {
     static public final int CLIENTINFO = 17;
     static public final int AUTHORIZE = 18;
     static public final int CANCEL_AUTHORIZE = 19;
+    static public final int CLEAR = 20;
     static public Socket server_socket = null;
 }
