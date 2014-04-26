@@ -12,9 +12,10 @@ public class Message implements Serializable {
     private int screen_height;
     private int vote_choice;
     private int vote_num;
-    private ArrayList<Integer> client_ids;
-    private ArrayList<String> client_names;
+    private int watcher_id;
+    private String watcher_name;
     private int request_speaker_id;
+
     public Message() {
         line_x = new ArrayList<Float>();
         line_y = new ArrayList<Float>();
@@ -23,8 +24,8 @@ public class Message implements Serializable {
         screen_width = 0;
         vote_choice = 0;
         request_speaker_id = 0;
-        client_ids = new ArrayList<Integer>();
-        client_names = new ArrayList<String>();
+        watcher_name = "";
+        watcher_id = -1;
     }
 
     public int getScreenWidth() {
@@ -92,18 +93,20 @@ public class Message implements Serializable {
         this.vote_num = num;
     }
 
-    public void addclient(int id, String name) {
-        client_ids.add(id);
-        client_names.add(name);
+    public int getWatcher_id() {
+        return watcher_id;
     }
 
-    public ArrayList<Integer> getClientIds() {
-        return client_ids;
-
+    public void setWatcher_id(int id) {
+        this.watcher_id = id;
     }
 
-    public ArrayList<String> getClientNames() {
-        return client_names;
+    public String getWatcher_name() {
+        return watcher_name;
+    }
+
+    public void setWatcher_name(String name) {
+        this.watcher_name = name;
     }
 
     public int getRequestId() {

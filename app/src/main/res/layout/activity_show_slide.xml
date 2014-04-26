@@ -103,9 +103,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/menu_layout"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -249,12 +249,6 @@
 
 
     </LinearLayout>
-
-
-
-
-
-
 
 
 </FrameLayout>

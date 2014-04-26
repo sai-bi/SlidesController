@@ -23,5 +23,6 @@ public class Command {
     static public final int SPEAKER = 16;
     static public final int CREATE_VOTE = 13;
     static public final int VOTE_CHOICE = 14;
+    static public final int CLIENTINFO = 17;
     static public Socket server_socket = null;
 }
