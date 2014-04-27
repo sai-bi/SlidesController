@@ -31,6 +31,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="#FFFFFF"
+        android:drawableRight="@drawable/computer"
         android:hint="Server IP"
         android:inputType="text"
         android:padding="7dp"
@@ -46,14 +47,15 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
+        android:drawableRight="@drawable/port"
         android:hint="Port"
         android:inputType="text"
-        android:paddingLeft="7dp"
+        android:padding="7dp"
         android:textSize="20dp" />
 
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/name"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/port_input"
@@ -62,17 +64,18 @@
         android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:background="#FFFFFF"
-        android:hint="Password"
+        android:drawableRight="@drawable/name"
+        android:hint="Name"
         android:inputType="text"
-        android:paddingLeft="7dp"
+        android:padding="7dp"
         android:textSize="20dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/role_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/name"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 

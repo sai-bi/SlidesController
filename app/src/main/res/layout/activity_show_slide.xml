@@ -12,29 +12,7 @@
             android:id="@+id/slides_image_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/background" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/menu_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/menu" />
-
-        <Button
-            android:id="@+id/watcher_list_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/list" />
+            android:background="#43858D" />
     </LinearLayout>
 
 
@@ -98,7 +76,7 @@
     </LinearLayout>
 
 
-    <HorizontalScrollView
+    <ScrollView
         android:id="@+id/menu_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -109,145 +87,94 @@
             android:id="@+id/menu_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:background="@drawable/top_bg"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/start_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Start"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/play" />
 
             <Button
                 android:id="@+id/end_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="End"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/stop" />
 
             <Button
                 android:id="@+id/previous_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Previous"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/prev" />
 
             <Button
                 android:id="@+id/next_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Next"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/next" />
 
             <Button
                 android:id="@+id/black_screen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Black"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/black" />
 
             <Button
                 android:id="@+id/white_screen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="White"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/white" />
 
             <Button
                 android:id="@+id/pen_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Pen"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
-
-            <Button
-                android:id="@+id/laser_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Laser"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/edit" />
 
             <Button
                 android:id="@+id/highlighter_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Highlight"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="4dp"
+                android:background="@drawable/highlighter" />
 
             <Button
                 android:id="@+id/voting_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Vote"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/vote" />
 
             <Button
                 android:id="@+id/clear_button"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/top_bg"
-                android:padding="10dp"
-                android:text="Clear"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp" />
+                android:layout_margin="5dp"
+                android:background="@drawable/clear" />
 
 
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/watcher_list_layout"
@@ -263,11 +190,47 @@
             android:layout_width="150dp"
             android:layout_height="fill_parent"
             android:background="@drawable/top_bg"
-            android:visibility="invisible">
+            android:visibility="gone">
 
         </ListView>
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@drawable/top_bg"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/menu_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/menu" />
+
+        <Button
+            android:id="@+id/watcher_list_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/group"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/request_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/request"
+            android:visibility="gone" />
     </LinearLayout>
 
 

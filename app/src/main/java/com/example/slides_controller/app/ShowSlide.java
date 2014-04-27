@@ -23,11 +23,11 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.ViewSwitcher;
 
@@ -59,6 +59,7 @@ public class ShowSlide extends Activity {
     private boolean authorized;
 
     private Bitmap last_bitmap;
+    private int role;
     // private List<Map<String, Object>> watcher_listview_data;
 
     @Override
@@ -73,7 +74,7 @@ public class ShowSlide extends Activity {
         socket = Command.server_socket;
         pen_mode = false;
 
-        int role = intent.getIntExtra("role", Command.WATCHER);
+        role = intent.getIntExtra("role", Command.WATCHER);
         if (role == Command.SPEAKER) {
             authorized = true;
         } else {
@@ -149,7 +150,7 @@ public class ShowSlide extends Activity {
 
         final WebView chart_view = (WebView) (findViewById(R.id.chart_view));
         final Button exit_chart_button = (Button) (findViewById(R.id.exit_chart_button));
-        final HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
+        final ScrollView menu_scroll_view = (ScrollView) (findViewById(R.id.menu_scroll_view));
 
         final Button menu_button = (Button) (findViewById(R.id.menu_button));
         final Button watcher_list_button = (Button) (findViewById(R.id.watcher_list_button));
@@ -158,8 +159,24 @@ public class ShowSlide extends Activity {
         final LinearLayout watcher_list_layout = (LinearLayout) (findViewById(R.id.watcher_list_layout));
 
         final Button clear_button = (Button) (findViewById(R.id.clear_button));
+        final Button request_button = (Button) (findViewById(R.id.request_button));
 //        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
         final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
+
+
+        if (role == Command.WATCHER) {
+            request_button.setVisibility(View.VISIBLE);
+        } else if (role == Command.SPEAKER) {
+            watcher_list_button.setVisibility(View.VISIBLE);
+        }
+
+        request_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage(Command.REQUEST);
+            }
+        });
+
 
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,12 +260,12 @@ public class ShowSlide extends Activity {
                 if (visible == View.VISIBLE) {
                     Log.d("click", "visible");
                     menu_scroll_view.setVisibility(View.GONE);
-                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_up);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_left);
                     menu_scroll_view.setAnimation(slide);
                 } else {
                     Log.d("click", "invisible");
                     menu_scroll_view.setVisibility(View.VISIBLE);
-                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_down);
+                    Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_right);
                     menu_scroll_view.setAnimation(slide);
                 }
             }
@@ -266,7 +283,6 @@ public class ShowSlide extends Activity {
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_left);
                     watcher_list_view.setAnimation(slide);
                 } else {
-
                     watcher_list_view.setVisibility(View.VISIBLE);
                     Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_right);
                     watcher_list_view.setAnimation(slide);
@@ -358,11 +374,11 @@ public class ShowSlide extends Activity {
 
     private void menuLayoutGone() {
         //LinearLayout menu_layout = (LinearLayout)(findViewById(R.id.menu_layout));
-        HorizontalScrollView menu_scroll_view = (HorizontalScrollView) (findViewById(R.id.menu_scroll_view));
+        ScrollView menu_scroll_view = (ScrollView) (findViewById(R.id.menu_scroll_view));
         if (menu_scroll_view.getVisibility() == View.GONE)
             return;
         menu_scroll_view.setVisibility(View.GONE);
-        Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_up);
+        Animation slide = AnimationUtils.loadAnimation(ShowSlide.this, R.anim.menu_to_left);
         menu_scroll_view.setAnimation(slide);
     }
 
@@ -527,6 +543,7 @@ public class ShowSlide extends Activity {
                     case Command.CLIENTINFO:
                         watcher_id_list.add(message.getWatcher_id());
                         watcher_name_list.add(message.getWatcher_name());
+                        watcher_listview_adapter.notifyDataSetChanged();
                         break;
                     case Command.AUTHORIZE:
                         authorized = true;
@@ -544,17 +561,26 @@ public class ShowSlide extends Activity {
                     case Command.CANCEL_AUTHORIZE:
                         authorized = false;
                         break;
+                    case Command.CLIENT_LOSE:
+                        int id = message.getWatcher_id();
+                        int index = watcher_id_list.indexOf(id);
+                        if (index != -1) {
+                            watcher_id_list.remove(index);
+                            watcher_name_list.remove(index);
+                        }
+                        break;
                     case Command.CLEAR:
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
 
-                                // bisai
                                 ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
                                 slides_image_view.setImageDrawable(new BitmapDrawable(last_bitmap));
                             }
                         });
+                        break;
+                    case Command.EXIT:
+                        finishActivity(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         break;
                     default:
                         break;
