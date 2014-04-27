@@ -25,11 +25,14 @@
 
         <WebView
             android:id="@+id/chart_view"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_marginLeft="100dp"
             android:layout_weight="1"
             android:background="@drawable/background"
             android:visibility="visible" />
+
+        <!--
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,7 +75,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Exit" />
-        </LinearLayout>
+            </LinearLayout>
+            -->
     </LinearLayout>
 
 
@@ -148,13 +152,13 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/edit" />
 
-            <Button
-                android:id="@+id/highlighter_button"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:background="@drawable/highlighter" />
+            <!--<Button-->
+            <!--android:id="@+id/highlighter_button"-->
+            <!--android:layout_width="75dp"-->
+            <!--android:layout_height="75dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_margin="4dp"-->
+            <!--android:background="@drawable/highlighter" />-->
 
             <Button
                 android:id="@+id/voting_button"
