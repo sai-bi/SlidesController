@@ -71,42 +71,46 @@
         android:textSize="20dp"
         android:visibility="visible" />
 
+
     <LinearLayout
         android:id="@+id/role_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/role_group"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/speaker"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:orientation="horizontal">
+            android:background="@drawable/rectangle1"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="Speaker"
+            android:textColor="#ACACAD"
+            android:textSize="25dp" />
 
-            <RadioButton
-                android:id="@+id/watcher_btn"
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="right">
+
+            <TextView
+                android:id="@+id/audience"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="80dp"
-                android:checked="true"
-                android:text="Watcher"
+                android:background="@drawable/rectangle"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Audience"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp" />
-
-            <RadioButton
-                android:id="@+id/talker_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="Talker"
-                android:textColor="#FFFFFF"
-                android:textSize="16dp" />
-        </RadioGroup>
-
+                android:textSize="25dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -123,130 +127,4 @@
         android:textColor="#ffffff"
         android:textSize="30dp" />
 
-</RelativeLayout><!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:gravity="center_horizontal">
-
-
-
-    <LinearLayout
-        android:id="@+id/logo_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/login_data_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logo_layout"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical">
-
-
-        <EditText
-            android:id="@+id/server_ip_input"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Server IP"
-            android:inputType="text" />
-
-
-        <EditText
-            android:id="@+id/port_input"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Port"
-            android:inputType="text" />
-
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="text"
-            android:visibility="gone" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/role_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_data_layout"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <RadioGroup
-            android:id="@+id/role_group"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/watcher_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="80dp"
-                android:checked="true"
-                android:text="Watcher"
-                android:textColor="#FFFFFF"
-                android:textSize="16dp" />
-
-            <RadioButton
-                android:id="@+id/talker_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="Talker"
-                android:textColor="#FFFFFF"
-
-                android:textSize="16dp" />
-        </RadioGroup>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/connect_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/role_layout"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/buttonbg"
-        android:padding="10dp"
-        android:text="Connect"
-        android:textColor="#ffffff"
-        android:textSize="18dp" />
-
-
 </RelativeLayout>
-    -->

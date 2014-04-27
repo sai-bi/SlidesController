@@ -393,8 +393,7 @@ public class ShowSlide extends Activity {
 
 
     private void setImageViewListener() {
-//        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-        // bisai
+
         final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
 
         slides_image_view.setInAnimation(AnimationUtils.loadAnimation(ShowSlide.this, R.anim.slide_in));
@@ -504,11 +503,20 @@ public class ShowSlide extends Activity {
             return false;
         }
         if (keycode == KeyEvent.KEYCODE_MENU) {
-
+            super.onKeyDown(KeyEvent.KEYCODE_MENU, e);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_UP) {
             sendMessage(Command.PREVIOUS_SLIDE);
         } else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             sendMessage(Command.NEXT_SLIDE);
+        } else if (keycode == KeyEvent.KEYCODE_BACK) {
+            try {
+                socket.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            super.onKeyDown(keycode, e);
+        } else {
+            super.onKeyDown(keycode, e);
         }
 
         return true;
@@ -541,14 +549,19 @@ public class ShowSlide extends Activity {
                         showVoteDialog(message.getVoteNum());
                         break;
                     case Command.CLIENTINFO:
+
                         watcher_id_list.add(message.getWatcher_id());
                         watcher_name_list.add(message.getWatcher_name());
-                        watcher_listview_adapter.notifyDataSetChanged();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                watcher_listview_adapter.notifyDataSetChanged();
+                            }
+                        });
                         break;
                     case Command.AUTHORIZE:
                         authorized = true;
                         // start animation
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -568,6 +581,12 @@ public class ShowSlide extends Activity {
                             watcher_id_list.remove(index);
                             watcher_name_list.remove(index);
                         }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                watcher_listview_adapter.notifyDataSetChanged();
+                            }
+                        });
                         break;
                     case Command.CLEAR:
                         runOnUiThread(new Runnable() {
@@ -580,7 +599,34 @@ public class ShowSlide extends Activity {
                         });
                         break;
                     case Command.EXIT:
-                        finishActivity(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        Log.d("exit", "exit");
+                        //finishActivity(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                ShowSlide.this.onBackPressed();
+                            }
+                        });
+
+                        break;
+                    case Command.REQUEST:
+
+                        int request_id = message.getRequestId();
+                        final int request_index = watcher_id_list.indexOf(request_id);
+                        if (request_index != -1) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    final ListView watcher_list_view = (ListView) (findViewById(R.id.watcher_list_view));
+                                    final View v = watcher_list_view.getChildAt(request_index);
+                                    ImageView watcher_image_view = (ImageView) (v.findViewById(R.id.watcher_image_view));
+                                    watcher_image_view.setBackgroundResource(R.drawable.requestauthor);
+                                    watcher_image_view.setVisibility(View.VISIBLE);
+                                    watcher_listview_adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
                         break;
                     default:
                         break;
@@ -602,8 +648,6 @@ public class ShowSlide extends Activity {
                 int origin_height = message.getScreenHeight();
                 float height_ratio = screen_height / (float) origin_height;
                 float width_ratio = screen_width / (float) origin_width;
-//                final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-                // bisai
                 final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
 
 
@@ -655,8 +699,6 @@ public class ShowSlide extends Activity {
     private void displayImage(Message message) {
         byte[] image = message.getImageByteArray();
         bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-//        final ImageView slides_image_view = (ImageView) (findViewById(R.id.slides_image_view));
-        // bisai
         final ImageSwitcher slides_image_view = (ImageSwitcher) (findViewById(R.id.slides_image_view));
         bitmap = Bitmap.createScaledBitmap(bitmap, screen_width, screen_height, false);
 

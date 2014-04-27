@@ -3,12 +3,13 @@ package com.example.slides_controller.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.net.Socket;
 
@@ -27,7 +28,8 @@ public class Connect extends Activity {
 
 
         final Button connect_btn;
-        final RadioGroup role_radio_group;
+        final TextView speaker_text_view;
+        final TextView audience_text_view;
         final EditText password_input;
         final EditText server_ip_input;
         final EditText port_num_input;
@@ -35,21 +37,40 @@ public class Connect extends Activity {
 
         role_id = Command.WATCHER;
         connect_btn = (Button) (findViewById(R.id.connect_btn));
-        role_radio_group = (RadioGroup) (findViewById(R.id.role_group));
+
 
         server_ip_input = (EditText) (findViewById(R.id.server_ip_input));
         port_num_input = (EditText) (findViewById(R.id.port_input));
+        speaker_text_view = (TextView) (findViewById(R.id.speaker));
+        audience_text_view = (TextView) (findViewById(R.id.audience));
 
-        role_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        speaker_text_view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (role_id == Command.SPEAKER) {
-                    role_id = Command.WATCHER;
-                } else {
-                    role_id = Command.SPEAKER;
-                }
+            public void onClick(View view) {
+                speaker_text_view.setBackgroundResource(R.drawable.rectangle);
+                audience_text_view.setBackgroundResource(R.drawable.rectangle1);
+                speaker_text_view.setTextColor(Color.parseColor("#FFFFFF"));
+                audience_text_view.setTextColor(Color.parseColor("#ACACAD"));
+                role_id = Command.SPEAKER;
+
             }
         });
+
+        audience_text_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                audience_text_view.setBackgroundResource(R.drawable.rectangle);
+                speaker_text_view.setBackgroundResource(R.drawable.rectangle1);
+                audience_text_view.setTextColor(Color.parseColor("#FFFFFF"));
+                speaker_text_view.setTextColor(Color.parseColor("#ACACAD"));
+                role_id = Command.WATCHER;
+            }
+        });
+
+
+
+
+
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
